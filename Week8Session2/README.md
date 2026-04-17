@@ -22,33 +22,37 @@ Updated `SecurityConfig.java` to:
 - Require `ADMIN` authority specifically for `DELETE` requests.
 - Added a custom `AccessDeniedHandler` to return a `403 Forbidden` status with a descriptive JSON body when an unauthorized user attempts a restricted operation.
 
-### 3. Service Layer
-Extended `BookService.java` with logic to verify book existence and perform deletion using the `BookRepository`.
+## Testing Results (Postman Screenshots)
+
+### 1. Register ADMIN User
+Registering a new user with both `USER` and `ADMIN` roles.
+![Register as Admin](<Image/Register as Admin.png>)
+
+### 2. Login as ADMIN
+Logging in as the admin user to retrieve the JWT token.
+![Login as Admin](<Image/Login as Admin.png>)
+
+### 3. Scenario 1: ADMIN can delete
+Making a `DELETE` request with an ADMIN token returns `200 OK`.
+![Delete Book With Admin Permission](<Image/Delete Book With Admin Permission.png>)
+
+### 4. Scenario 2: USER cannot delete
+Making a `DELETE` request with a regular USER token returns `403 Forbidden` (Access Denied).
+![Delete Book With User Permission](<Image/Delete Book With User Permission.png>)
+
+---
 
 ## Getting Started
 
 ### Prerequisites
 - Java 21
 - MongoDB (running on `localhost:27017`)
-- Maven (included wrapper `./mvnw`)
+- Maven (included wrapper `./mvnw` inside the `bookstore_mongodb` folder)
 
 ### Running the Application
 1. Start your MongoDB server.
-2. Run the application using Maven:
+2. Navigate to the project folder: `cd bookstore_mongodb`
+3. Run the application using Maven:
    ```bash
    ./mvnw spring-boot:run
    ```
-
-## Testing with Postman
-
-### Scenario 1: ADMIN Authorization
-1. **Register** a user with `["USER", "ADMIN"]` roles at `/api/auth/register`.
-2. **Login** at `/api/auth/login` to retrieve the JWT token.
-3. **DELETE** a book at `/api/books/{id}` using the token in the `Authorization: Bearer <token>` header.
-4. Result: `200 OK`.
-
-### Scenario 2: USER Authorization (Forbidden)
-1. **Register** a user with only `["USER"]` role.
-2. **Login** to retrieve the token.
-3. **DELETE** a book using this token.
-4. Result: `403 Forbidden` with "Access Denied" message.

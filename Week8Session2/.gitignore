@@ -1,0 +1,6 @@
+.idea/
+*.log
+bookstore_mongodb/target/
+bin/
+*.class
+.DS_Store
