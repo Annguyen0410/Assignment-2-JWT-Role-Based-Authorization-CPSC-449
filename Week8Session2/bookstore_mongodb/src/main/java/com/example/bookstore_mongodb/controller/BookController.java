@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
@@ -21,5 +23,15 @@ public class BookController {
     @PostMapping
     public Book createBook(@RequestBody Book book) {
         return bookService.createBook(book);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteBook(@PathVariable String id) {
+        boolean deleted = bookService.deleteBook(id);
+        if (deleted) {
+            return ResponseEntity.ok("Book deleted successfully");
+        } else {
+            return ResponseEntity.status(404).body("Book not found");
+        }
     }
 }
